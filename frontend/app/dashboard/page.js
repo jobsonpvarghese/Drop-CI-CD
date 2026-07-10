@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUser, logout } from "@/app/lib/auth";
+import RepoList from "@/app/components/RepoList";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
 
@@ -68,8 +69,16 @@ export default function Dashboard() {
         <div className="mx-auto max-w-3xl px-6 py-4 flex items-center justify-between">
           <span className="font-semibold tracking-tight">Drop-CI/CD</span>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              {user.username}
+            <span className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+              {user.avatarUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={user.avatarUrl}
+                  alt=""
+                  className="h-6 w-6 rounded-full"
+                />
+              )}
+              {user.name || user.login}
             </span>
             <button
               onClick={handleLogout}
@@ -120,6 +129,10 @@ export default function Dashboard() {
             {logs}
           </pre>
         )}
+
+        <div className="mt-12">
+          <RepoList onSelectRepo={(cloneUrl) => setRepoUrl(cloneUrl)} />
+        </div>
       </main>
     </div>
   );

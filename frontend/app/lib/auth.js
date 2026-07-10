@@ -1,11 +1,13 @@
 "use client";
 
-// Dummy client-side auth. NOT secure — for demo/UI purposes only.
-const STORAGE_KEY = "minici_user";
+// Client-side session for the GitHub OAuth flow. The access token is stored in
+// localStorage for simplicity (matches this demo's setup); a production app
+// would prefer an httpOnly cookie set by the backend to reduce XSS exposure.
+const STORAGE_KEY = "drop_cicd_session";
 
-export function login(username) {
+export function saveSession({ token, user }) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ username }));
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ token, ...user }));
 }
 
 export function logout() {
@@ -21,4 +23,8 @@ export function getUser() {
   } catch {
     return null;
   }
+}
+
+export function getToken() {
+  return getUser()?.token || null;
 }
