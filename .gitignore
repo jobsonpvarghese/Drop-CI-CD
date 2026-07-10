@@ -11,6 +11,9 @@ build/
 .env.*
 !.env*.example
 
+# claude code (personal, machine-specific)
+.claude/settings.local.json
+
 # misc
 .DS_Store
 *.pem
